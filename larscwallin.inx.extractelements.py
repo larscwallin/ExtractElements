@@ -49,6 +49,10 @@ class ExtractElements(inkex.Effect):
               type = 'inkbool', dest = 'resize', default = False,
               help = 'Resize the drawing canvas to the elements?')
 
+        self.OptionParser.add_option('--reposition', action = 'store',
+              type = 'inkbool', dest = 'reposition', default = False,
+              help = 'Reposition elements to the top left corner of the drawing?')
+
 
     def effect(self):
         """
@@ -58,6 +62,7 @@ class ExtractElements(inkex.Effect):
         self.base64Encode = self.options.encode
         self.viewResult = self.options.viewresult
         self.resizeDrawing = self.options.resize
+        self.reposition = self.options.reposition
 
 
         self.getselected()
@@ -89,10 +94,13 @@ class ExtractElements(inkex.Effect):
                 elementId = element.get('id')
 
                 tagName= self.getTagName(element)
+
                 if(tagName== 'path'):
-                    pathData = self.movePath(element,0,0,'tl')
-                    if(pathData):
-                        element.set('d',pathData)
+
+                    if(self.reposition or self.resizeDrawing):
+                        pathData = self.movePath(element,0,0,'tl')
+                        if(pathData):
+                            element.set('d',pathData)
 
                 elementBox = list(simpletransform.computeBBox([element]))
                 elementBox[1] = (elementBox[1]-elementBox[0])
