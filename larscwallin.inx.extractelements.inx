@@ -5,9 +5,9 @@
   <dependency type="executable" location="extensions">inkex.py</dependency>
   <param name="where" type="string" _gui-text="Output path"></param>
   <param name="encode" type="boolean" _gui-text="Do you wish to Base64 encode the SVG?">false</param>
+  <param name="resize" type="boolean" _gui-text="Resize the new drawing to fit each element?">false</param>
+  <param name="reposition" type="boolean" _gui-text="Reposition each element to top/left (x=0, y=0)?">false</param>
   <param name="viewresult" type="boolean" _gui-text="Do you wish to view the result?">true</param>
-  <param name="resize" type="boolean" _gui-text="Resize the drawing canvas for each element?">false</param>
-
   <effect>
     <object-type>all</object-type>
     <effects-menu>
