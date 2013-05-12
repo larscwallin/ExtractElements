@@ -1,0 +1,20 @@
+<inkscape-extension>
+  <_name>Extract Elements</_name>
+  <id>com.larscwallin.inx.extractelements</id>
+  <dependency type="executable" location="extensions">larscwallin.inx.extractelements.py</dependency>
+  <dependency type="executable" location="extensions">inkex.py</dependency>
+  <param name="where" type="string" _gui-text="Output path"></param>
+  <param name="encode" type="boolean" _gui-text="Do you wish to Base64 encode the SVG?">false</param>
+  <param name="viewresult" type="boolean" _gui-text="Do you wish to view the result?">true</param>
+  <param name="resize" type="boolean" _gui-text="Resize the drawing canvas for each element?">false</param>
+
+  <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+       <submenu _name="Export"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command reldir="extensions" interpreter="python">larscwallin.inx.extractelements.py</command>
+  </script>
+</inkscape-extension>
