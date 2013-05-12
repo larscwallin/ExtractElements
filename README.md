@@ -4,6 +4,8 @@ ExtractElements
 larscwallin.inx.extractelements version 0.1 extracts all selected SVG Elements to file and/or displayed as a string in the 
 Inkscape GUI.
 
+UPDATE 130512
+* Moved code from Gist to proper Repo
 
 UPDATE 130510
 * Added option to keep the canvas size of the original drawing when exporting. 
