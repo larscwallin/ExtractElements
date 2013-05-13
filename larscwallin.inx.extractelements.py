@@ -15,6 +15,7 @@ import inkex
 import simpletransform
 import simplepath
 import simplestyle
+from scour import scourString
 
 class ExtractElements(inkex.Effect):
 
@@ -53,6 +54,11 @@ class ExtractElements(inkex.Effect):
               type = 'inkbool', dest = 'reposition', default = False,
               help = 'Reposition elements to the top left corner of the drawing?')
 
+        self.OptionParser.add_option('--scour', action = 'store',
+              type = 'inkbool', dest = 'scour', default = False,
+              help = 'Clean up drawing source using Scour?')
+
+
 
     def effect(self):
         """
@@ -63,7 +69,7 @@ class ExtractElements(inkex.Effect):
         self.viewResult = self.options.viewresult
         self.resizeDrawing = self.options.resize
         self.reposition = self.options.reposition
-
+        self.scour = self.options.scour
 
         self.getselected()
 
@@ -73,7 +79,18 @@ class ExtractElements(inkex.Effect):
 
         overideElementDim = False
 
+        # Temporary solution where I grab all defs, regardless of if they are actually used or not
+        # defs = self.document.xpath('//svg:svg/svg:defs',namespaces=inkex.NSS)[0]
+
         layers = self.document.xpath('//svg:svg/svg:g[@style!="display:none"]',namespaces=inkex.NSS)
+
+        """
+        if(len(defs) > 0):
+            defs = inkex.etree.tostring(defs)
+        else:
+            defs = '<defs/>'
+        """
+
 
         # If no elements where selected we default to exporting every visible layer in the drawing
         if(self.selected.__len__() <= 0):
@@ -124,7 +141,11 @@ class ExtractElements(inkex.Effect):
                         tplResult = string.replace(self.exportTemplate,'{{element.width}}',str(self.svgWidth))
                         tplResult = string.replace(tplResult,'{{element.height}}',str(self.svgHeight))
 
+                    #tplResult = string.replace(tplResult,'{{document.defs}}',defs)
                     tplResult = string.replace(tplResult,'{{element.source}}',elementSource)
+
+                    if(self.scour):
+                        tplResult = self.scourDoc(tplResult)
 
                     # If the result of the operation is valid, add the SVG source to the selected array
                     if(tplResult):
@@ -222,6 +243,8 @@ class ExtractElements(inkex.Effect):
 
         return simplepath.formatPath(path)
 
+    def scourDoc(self,str):
+        return scourString(str).encode("UTF-8")
 
     def saveToFile(self,content,filename):
 
