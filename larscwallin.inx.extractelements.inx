@@ -7,6 +7,7 @@
   <param name="encode" type="boolean" _gui-text="Do you wish to Base64 encode the SVG?">false</param>
   <param name="resize" type="boolean" _gui-text="Resize the new drawing to fit each element?">false</param>
   <param name="reposition" type="boolean" _gui-text="Reposition each element to top/left (x=0, y=0)?">false</param>
+  <param name="scour" type="boolean" _gui-text="Do you wish to clean up drawings using Scour?">false</param>
   <param name="viewresult" type="boolean" _gui-text="Do you wish to view the result?">true</param>
   <effect>
     <object-type>all</object-type>
