@@ -4,6 +4,10 @@ ExtractElements
 larscwallin.inx.extractelements version 0.1 extracts all selected SVG Elements to file and/or displayed as a string in the 
 Inkscape GUI.
 
+
+UPDATE 130801
+* Made some fixes to the SVG output to make it cross browser friendly. Fixes include the addition of the "preserveAspectRatio" attribute to the SVG tag.
+
 UPDATE 130513
 * Added a clean up option using the scour.py extension. 
 
