@@ -7,6 +7,7 @@ Inkscape GUI.
 
 UPDATE 130801
 * Made some fixes to the SVG output to make it cross browser friendly. Fixes include the addition of the "preserveAspectRatio" attribute to the SVG tag.
+* Base64 outputs sass variable list (will soon be optional of course).
 
 UPDATE 130513
 * Added a clean up option using the scour.py extension. 
