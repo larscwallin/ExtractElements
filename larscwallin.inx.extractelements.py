@@ -22,9 +22,12 @@ class ExtractElements(inkex.Effect):
     exportTemplate = """<?xml version="1.0" standalone="no"?>
                     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
                     "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="{{element.width}}" height="{{element.height}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="0 0 {{element.width}} {{element.height}}" enable-background="new 0 0 {{element.width}} {{element.height}}" xml:space="preserve" preserveAspectRatio="xMinYMin">
                     {{element.source}}
                     </svg>"""
+
+    cssTemplate = """.{{css.prefix}}{{element.label}}{{css.suffix}}:url({{element.source}});"""
+    sassTemplate = """${{sass.var.prefix}}{{element.label}}{{sass.var.suffix}}="{{element.source}}";"""
 
     def __init__(self):
         """
@@ -70,6 +73,8 @@ class ExtractElements(inkex.Effect):
         self.resizeDrawing = self.options.resize
         self.reposition = self.options.reposition
         self.scour = self.options.scour
+        self.renderSass = True
+        self.CSSSource = []
 
         self.getselected()
 
@@ -137,9 +142,11 @@ class ExtractElements(inkex.Effect):
                     if(self.resizeDrawing):
                         tplResult = string.replace(self.exportTemplate,'{{element.width}}',str(elementWidth))
                         tplResult = string.replace(tplResult,'{{element.height}}',str(elementHeight))
+
                     else:
                         tplResult = string.replace(self.exportTemplate,'{{element.width}}',str(self.svgWidth))
                         tplResult = string.replace(tplResult,'{{element.height}}',str(self.svgHeight))
+
 
                     #tplResult = string.replace(tplResult,'{{document.defs}}',defs)
                     tplResult = string.replace(tplResult,'{{element.source}}',elementSource)
@@ -165,7 +172,15 @@ class ExtractElements(inkex.Effect):
                 if(content!=''):
 
                     if(self.base64Encode):
-                        content = ('data:image/svg+xml;name='+label+';base64,'+(base64.b64encode(content)))
+
+
+                        if(self.renderSass):
+                            content = ('$data-url-'+label+':"data:image/svg+xml;name='+label+';base64,'+(base64.b64encode(content))+'";')
+                            #node['source'] = ('data:image/svg+xml;name='+label+';base64,'+(base64.b64encode(content)))
+                            #content = self.renderSassStyle(node)
+                        else:
+                            pass
+                            #content = ('data:image/svg+xml;name='+label+';base64,'+(base64.b64encode(content)))
 
                     if(self.where!=''):
 
@@ -197,6 +212,14 @@ class ExtractElements(inkex.Effect):
         else:
                 inkex.debug('No SVG elements or layers to extract.')
 
+    def renderCSS(source):
+        pass
+        #if(source):
+            #self.CSSSource = (self.CSSSource + '')
+
+    def renderSassStyle(source):
+        if(source):
+            self.CSSSource = (self.CSSSource + '')
 
     def getTagName(self,node):
         type = node.get(inkex.addNS('type', 'sodipodi'))
