@@ -1,9 +1,22 @@
 ExtractElements
 ===============
 
-larscwallin.inx.extractelements version 0.1 extracts all selected SVG Elements to file and/or displayed as a string in the 
+larscwallin.inx.extractelements version 0.* extracts all selected SVG Elements to file and/or displayed as a string in the 
 Inkscape GUI.
 
+UPDATE 131008
+* Added optional JavaScript which enables you to add parameters to your <object data=""> url. These params lets you style your SVG elements on the fly. At the moment only hex color values are valid to keep things safe.
+
+Examples:
+
+Color the myelementid dark red
+
+some-svg.svg?id=myelementid&fill=#990000
+
+If no id param is supplied the style rules are applied to the SVG root.
+Below the elements are colored dark red with a black stroke.
+
+some-svg.svg?fill=#990000&stroke=#000000
 
 UPDATE 130801
 * Made some fixes to the SVG output to make it cross browser friendly. Fixes include the addition of the "preserveAspectRatio" attribute to the SVG tag.
