@@ -1,39 +1,65 @@
 (function(){
-	    if(document.location.hash){
-		    var params = { };
-		    var element;
-		    var valCheck = false;
+    if(document.location.hash){
+	    var params = [];
+	    var element;
+		var elementId;
+	    var isValid = false;
+	    var rules = '';
+	    var hasRules = false;
 
-		    location.href.split( '?' )[1].split( '&' ).forEach(
-		        function( i )
-		        {
-		            params[ i.split( '=' )[0] ] = i.split( '=' )[1];
-		        }
-		    );
+	    location.href.split( '?' )[1].split( '&' ).forEach(
+	        function( i )
+	        {
+	        	rule = i.split( '=' );
+	        	key = rule[0];
+	        	val = rule[1];
+	        	if(key!='id'){
+	        		hasRules = true;
+	            	params.push(rule);
+	        	}else{
+	        		// Save the id, if it exists.
+	        		elementId = val;
+	        	}
+	        }
+	    );
 
-		    // Force attribute to fill at the moment.
-			params.attr = 'fill';
+	    if( hasRules )
+	    {
 
-	    	valCheck  = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(params.value);
+	        if(!elementId){
+	        	// Got no element id so we apply the style to the svg doc
+	        	element = document.getElementsByTagName('svg')[0];
+	        }else{
+	        	element = document.getElementById( elementId );
+	        }
 
-	    	// We only allow hex values
-	    	if(valCheck){
-
-			    if( params.attr &&  params.value )
-			    {
-
-			        if(!params.id){
-			        	element = document.getElementsByTagName('svg')[0];
-			        }else{
-			        	element = document.getElementById( params.id );
+	        if(element){
+				
+				params.forEach(
+			        function( rule )
+			        {
+			        	if(rule.length == 2){
+				        	val  = rule[1];
+					    	isValid = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(val);
+					    	// We only allow hex values
+					    	if(isValid){
+								 rules += ( rule[0] + ':' + val + ';');
+							}
+						}else{
+							// Not a key/val pair								
+						}
 			        }
+			    );
 
-			        if(element){
-						element.setAttribute( 'style', ( params.attr + ':' + params.value + ';') );
-			        }else{
-			        	// element id reference returned null
-			        }
-			    }
-		    }
-		}
+				if(rules !== ''){
+					element.setAttribute( 'style', rules );
+				}else{
+					// No rules where returned from the foreach loop.
+				}
+
+	        }else{
+	        	// element id reference returned null
+	        }
+	    }
+	}
 })();
