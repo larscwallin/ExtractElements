@@ -31,7 +31,7 @@ class ExtractElements(inkex.Effect):
 
     cssTemplate = """.{{css.prefix}}{{element.label}}{{css.suffix}}:url({{element.source}});"""
     sassTemplate = """${{sass.var.prefix}}{{element.label}}{{sass.var.suffix}}="{{element.source}}";"""
-    js = """<script><![CDATA[(function(){if(document.location.hash){var d=[],e,c,g=!1,b="",f=!1;location.href.split("?")[1].split("&").forEach(function(a){rule=a.split("=");key=rule[0];val=rule[1];"id"!=key?(f=!0,d.push(rule)):c=val});f&&(e=c?document.getElementById(c):document.getElementsByTagName("svg")[0])&&(d.forEach(function(a){2==a.length&&(val=a[1],(g=/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(val))&&(b+=a[0]+":"+val+";"))}),""!==b&&e.setAttribute("style",b))}})();]]></script>"""
+    js = """<script><![CDATA[(function(){if(void 0!==document.location.hash){var e=[],f,d,b="",g=!1,h="fill fill-opacity fill-rule display stroke stroke-opacity stroke-width".split(" ");location.href.split("?")[1].split("&").forEach(function(a){a=a.split("=");var c=a[0],b=a[1];"id"!==c?0<=h.indexOf(c)&&(g=!0,e.push(a)):d=b});g&&(f=d?document.getElementById(d):document.getElementsByTagName("svg")[0])&&(e.forEach(function(a){var c;2===a.length&&(c=a[1],b+=a[0]+":"+c+";")}),""!=b&&f.setAttribute("style",b))}})();]]></script>"""
 
     def __init__(self):
         """
