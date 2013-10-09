@@ -31,7 +31,12 @@ class ExtractElements(inkex.Effect):
 
     cssTemplate = """.{{css.prefix}}{{element.label}}{{css.suffix}}:url({{element.source}});"""
     sassTemplate = """${{sass.var.prefix}}{{element.label}}{{sass.var.suffix}}="{{element.source}}";"""
-    js = """<script><![CDATA[(function(){if(void 0!==document.location.hash){var e=[],f,d,b="",g=!1,h="fill fill-opacity fill-rule display stroke stroke-opacity stroke-width".split(" ");location.href.split("?")[1].split("&").forEach(function(a){a=a.split("=");var c=a[0],b=a[1];"id"!==c?0<=h.indexOf(c)&&(g=!0,e.push(a)):d=b});g&&(f=d?document.getElementById(d):document.getElementsByTagName("svg")[0])&&(e.forEach(function(a){var c;2===a.length&&(c=a[1],b+=a[0]+":"+c+";")}),""!=b&&f.setAttribute("style",b))}})();]]></script>"""
+    js = """<script>
+        <![CDATA[
+			(function(){if(0<document.location.href.indexOf("?")){var e=[],a=[],a=[],b="",c,d="",f=!1,g="fill fill-opacity fill-rule display stroke stroke-opacity stroke-width".split(" "),b=location.href;""!==document.location.hash&&(a=document.location.href.split("#"),0<a.length?(c=a[1],b=a[0]):c=!1);b=b.split("?");1<b.length&&(a=b[1].split("&"),0<a.length&&a.forEach(function(a){a=a.split("=");0<=g.indexOf(a[0])&&(f=!0,e.push(a))}),f&&(c=c?document.getElementById(c):document.getElementsByTagName("svg")[0]))&&
+			(e.forEach(function(a){var b;2===a.length&&(b=a[1],d+=a[0]+":"+b+";")}),""!=d&&c.setAttribute("style",d))}})();
+		]]>
+    </script>"""
 
     def __init__(self):
         """
