@@ -1,21 +1,33 @@
 (function(){
-    if(document.location.hash){
+    if(document.location.hash !== undefined){
 	    var params = [];
 	    var element;
 		var elementId;
-	    var isValid = false;
 	    var rules = '';
 	    var hasRules = false;
+	    var validRules = [
+	    	'fill',
+	    	'fill-opacity',
+	    	'fill-rule',
+	    	'display',
+	    	'stroke',
+	    	'stroke-opacity',
+	    	'stroke-width'
+	    ];
 
 	    location.href.split( '?' )[1].split( '&' ).forEach(
 	        function( i )
 	        {
-	        	rule = i.split( '=' );
-	        	key = rule[0];
-	        	val = rule[1];
-	        	if(key!='id'){
-	        		hasRules = true;
-	            	params.push(rule);
+	        	var rule = i.split( '=' );
+	        	var key = rule[0];
+	        	var val = rule[1];
+	        	if(key!=='id'){
+		        	if(validRules.indexOf(key)>=0){
+		        		hasRules = true;
+		            	params.push(rule);
+		            }else{
+		            	// Not a valid rule
+		            }
 	        	}else{
 	        		// Save the id, if it exists.
 	        		elementId = val;
@@ -38,20 +50,17 @@
 				params.forEach(
 			        function( rule )
 			        {
-			        	if(rule.length == 2){
+			        	var val;
+			        	if(rule.length === 2){
 				        	val  = rule[1];
-					    	isValid = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(val);
-					    	// We only allow hex values
-					    	if(isValid){
-								 rules += ( rule[0] + ':' + val + ';');
-							}
+							rules += ( rule[0] + ':' + val + ';');
 						}else{
 							// Not a key/val pair								
 						}
 			        }
 			    );
 
-				if(rules !== ''){
+				if(rules != ''){
 					element.setAttribute( 'style', rules );
 				}else{
 					// No rules where returned from the foreach loop.
